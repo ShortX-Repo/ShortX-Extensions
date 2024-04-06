@@ -25,7 +25,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
+        maven(url = "https://jitpack.io")
+        jcenter()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ShortX-Repo/ShortX-Core")

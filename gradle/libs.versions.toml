@@ -9,6 +9,8 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.8.2"
 composeBom = "2023.08.00"
+tinypinyin = "3.0.0"
+apksig = "8.2.2"
 shortx = "v1.0.5"
 
 [libraries]
@@ -35,7 +37,8 @@ dagger-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
 hiddenapibypass = { module = "org.lsposed.hiddenapibypass:hiddenapibypass", version = "4.3" }
-
+tinypinyin = { module = "com.github.promeg:tinypinyin", version.ref = "tinypinyin" }
+apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
 ui-base = { module = "shortx:ui-base", version.ref = "shortx" }
 core = { module = "shortx:core", version.ref = "shortx" }
 

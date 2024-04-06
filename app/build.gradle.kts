@@ -54,6 +54,7 @@ android {
 dependencies {
     implementation(files("libs/apkzlib.jar"))
     implementation(files("libs/ManifestEditor-1.0.2.jar"))
+    implementation(libs.apksig)
 
     implementation(libs.ui.base)
     implementation(libs.core)
@@ -72,6 +73,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.hiddenapibypass)
+    implementation(libs.tinypinyin)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
