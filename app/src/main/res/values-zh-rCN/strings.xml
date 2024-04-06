@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">拓展包</string>
+    <string name="export_rule_as_apk">导出指令为快捷应用</string>
+</resources>

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ShortXExt</string>
+    <string name="app_name">ShortX Ext</string>
+    <string name="export_rule_as_apk">Export direct rule as apk</string>
 </resources>
