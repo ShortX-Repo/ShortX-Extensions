@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.github.promeg.pinyinhelper.Pinyin
 import kotlinx.coroutines.launch
-import tornaco.apps.shortx.core.res.Remix
 import tornaco.apps.shortx.core.util.Logger
 import tornaco.apps.shortx.core.util.fallbackOnEmpty
 import tornaco.apps.shortx.core.util.removeSpecialCharacters
@@ -41,9 +40,9 @@ fun ExportDAShortcut() {
         val info = ShortcutStubInfo(
             appLabel = da.title,
             appPkgName = "shortx.stub.${pkgNameSuffix}",
-            appIcon = Remix.System.apps_2_line,
+            appIcon = da.icon,
             appIconTintColor = Color.WHITE,
-            appIconBgColor = androidx.compose.ui.graphics.Color(Color.RED).toArgb(),
+            appIconBgColor = androidx.compose.ui.graphics.Color(da.iconColor).toArgb(),
             daId = da.id
         )
         scope.launch {

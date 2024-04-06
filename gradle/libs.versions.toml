@@ -11,7 +11,7 @@ activityCompose = "1.8.2"
 composeBom = "2023.08.00"
 tinypinyin = "3.0.0"
 apksig = "8.2.2"
-shortx = "v1.0.5"
+shortx = "v1.0.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

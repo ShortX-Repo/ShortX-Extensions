@@ -18,23 +18,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import tornaco.apps.shortx.core.proto.da.DirectAction
 import tornaco.apps.shortx.core.res.Remix
 import tornaco.apps.shortx.ui.base.CommonDialogState
 import tornaco.apps.shortx.ui.base.ListItem
 import tornaco.apps.shortx.ui.base.RemixIcon
 import tornaco.apps.shortx.ui.base.ShortFullScreenXDialog
 import tornaco.apps.shortx.ui.base.ShortXTopAppBar
+import tornaco.apps.shortx.ui.main.model.DirectActionUM
 import tornaco.apps.shortx.ui.theme.ShortXTheme
 
 
 class DADialogState(
-    val onSelected: (DirectAction) -> Unit
+    val onSelected: (DirectActionUM) -> Unit
 ) : CommonDialogState()
 
 @Composable
 fun rememberDADialogState(
-    onSelected: (DirectAction) -> Unit
+    onSelected: (DirectActionUM) -> Unit
 ): DADialogState {
     return remember {
         DADialogState(onSelected)
@@ -78,11 +78,11 @@ private fun DASelector(dialogState: DADialogState) {
                         actions = {
                         },
                     )
-                }) {
+                }) { paddingValues ->
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize(),
-                    contentPadding = it
+                    contentPadding = paddingValues
                 ) {
                     items(daListState.daList) {
                         ListItem(
