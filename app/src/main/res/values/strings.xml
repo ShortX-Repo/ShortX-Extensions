@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ShortX Ext</string>
+    <string name="app_intro">This is an extension package for ShortX, containing some features that, for various reasons, cannot be published on the market. \n\nThis application is fully open source, and you can visit GitHub and search for ShortX-Repo to view the source code.</string>
     <string name="export_rule_as_apk">Export direct rule as apk</string>
 </resources>
