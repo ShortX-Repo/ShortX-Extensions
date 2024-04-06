@@ -40,4 +40,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "ShortXExt"
 include(":app")
- 
