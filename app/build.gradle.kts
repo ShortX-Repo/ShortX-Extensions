@@ -22,6 +22,17 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            "public.jks".also {
+                storeFile = rootProject.file(it)
+                storePassword = "123456"
+                keyAlias = "shortx"
+                keyPassword = "123456"
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -29,6 +40,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
