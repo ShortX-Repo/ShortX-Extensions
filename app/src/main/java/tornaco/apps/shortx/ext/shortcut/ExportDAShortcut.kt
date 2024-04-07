@@ -4,7 +4,11 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.toArgb
@@ -20,6 +24,7 @@ import tornaco.apps.shortx.ext.ui.DASelectorDialog
 import tornaco.apps.shortx.ext.ui.rememberDADialogState
 import tornaco.apps.shortx.ui.base.ListItem
 import tornaco.apps.shortx.ui.base.ProgressDialog
+import tornaco.apps.shortx.ui.base.rememberCommonDialogState
 import tornaco.apps.shortx.ui.base.rememberProgressDialogState
 import tornaco.apps.shortx.ui.shortcut.ApkInstallState
 import tornaco.apps.shortx.ui.shortcut.ShortcutStubInstaller
@@ -33,6 +38,26 @@ fun ExportDAShortcut() {
     ProgressDialog(state = progressDialogState)
     val uiHandler = remember {
         Handler(Looper.getMainLooper())
+    }
+
+    val errorDialogState = rememberCommonDialogState()
+    val errorMessage = remember {
+        mutableStateOf("N/A")
+    }
+    if (errorDialogState.isShowing) {
+        AlertDialog(
+            onDismissRequest = { errorDialogState.dismiss() },
+            confirmButton = {
+                Button(onClick = { errorDialogState.dismiss() }) {
+                    Text(text = stringResource(id = android.R.string.ok))
+                }
+            },
+            title = {
+                Text(text = "ERROR")
+            },
+            text = {
+                Text(text = errorMessage.value)
+            })
     }
 
     val daSelectorState = rememberDADialogState { da ->
@@ -52,11 +77,10 @@ fun ExportDAShortcut() {
                     when (it) {
                         is ApkInstallState.InstallFailure -> {
                             progressDialogState.dismiss()
-                            Toast.makeText(
-                                context,
-                                it.message.fallbackOnEmpty { "Failed." },
-                                Toast.LENGTH_LONG
-                            ).show()
+
+                            errorMessage.value =
+                                context.resources.getString(R.string.install_apk_error) + "\n" + it.message.fallbackOnEmpty { "Failed." }
+                            errorDialogState.show()
                         }
 
                         ApkInstallState.InstallSuccess -> {
