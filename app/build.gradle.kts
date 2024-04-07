@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
 }
 
+val extVersionCode = 1
+val extVersionName = "1.0"
+
 android {
     namespace = "tornaco.apps.shortx.ext"
     compileSdk = 34
@@ -13,8 +16,8 @@ android {
         applicationId = "tornaco.apps.shortx.ext"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = extVersionCode
+        versionName = extVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -60,6 +63,17 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    applicationVariants.all {
+        outputs.all {
+            val impl =
+                this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+            println("impl.outputFileName changed to:${impl.outputFileName}")
+        }
+    }
+
+    defaultConfig {
+        setProperty("archivesBaseName", "ext-${extVersionName}")
     }
 }
 
