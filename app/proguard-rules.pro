@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn android.content.pm.ParceledListSlice
+-dontwarn android.os.ServiceManager
+-dontwarn com.android.internal.appwidget.IAppWidgetHost
+-dontwarn com.android.internal.appwidget.IAppWidgetService$Stub
+-dontwarn com.android.internal.appwidget.IAppWidgetService
+-dontwarn com.google.auto.value.AutoValue$Builder
+-dontwarn com.google.auto.value.AutoValue

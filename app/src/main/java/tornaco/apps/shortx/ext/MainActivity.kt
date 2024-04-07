@@ -25,6 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import tornaco.apps.shortx.core.res.Remix
 import tornaco.apps.shortx.core.shortXManager
 import tornaco.apps.shortx.ext.shortcut.ExportDAShortcut
+import tornaco.apps.shortx.ui.base.CategoryTitle
+import tornaco.apps.shortx.ui.base.ErrorCard
 import tornaco.apps.shortx.ui.base.RemixIcon
 import tornaco.apps.shortx.ui.base.ShortXMediumTopAppBar
 import tornaco.apps.shortx.ui.base.TipCard
@@ -86,17 +88,22 @@ fun MainContent() {
                 )
             }
 
-            AnimatedVisibility(visible = shortXManager.isInstalled && shortXManager.version().code < 102051) {
-                TipCard(
+            AnimatedVisibility(visible = shortXManager.isInstalled && shortXManager.version().code < MIN_SHORTX_VERSION_CODE) {
+                ErrorCard(
                     modifier = Modifier
                         .padding(vertical = 16.dp)
                         .padding(horizontal = 16.dp),
-                    tip = "The installed ShortX version is too low. Please update it.",
+                    title = "ERROR",
+                    warnings = listOf("The installed ShortX version is too low. Please update it.")
                 )
             }
 
+            CategoryTitle(
+                title = stringResource(id = R.string.ext_features)
+            )
             ExportDAShortcut()
         }
     }
 }
 
+const val MIN_SHORTX_VERSION_CODE = 102051
