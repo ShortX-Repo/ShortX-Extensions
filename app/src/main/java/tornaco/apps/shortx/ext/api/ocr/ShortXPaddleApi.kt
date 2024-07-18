@@ -4,12 +4,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import autojs.api.OcrPaddle
 import autojs.image.ImageWrapper
-import com.baidu.paddle.lite.ocr.OcrResult
 import tornaco.apps.shortx.core.util.Logger
 import tornaco.apps.shortx.ext.api.ExtAppAssetsHelper
 
-class Paddle(private val context: Context) {
-    private val logger = Logger("Paddle")
+class ShortXPaddleApi(private val context: Context) {
+    private val logger = Logger("ShortXPaddleApi")
 
     private val assetsFiles = listOf(
         "labels/ppocr_keys_v1.txt",
@@ -37,9 +36,11 @@ class Paddle(private val context: Context) {
         image: Bitmap,
         cpuThreadNum: Int = 4,
         useSlim: Boolean = false
-    ): List<OcrResult> {
+    ): List<ByteArray> {
         val result = ocr.detect(ImageWrapper.ofBitmap(image), cpuThreadNum, useSlim)
         logger.d("Detect: $result")
-        return result
+        return result.map {
+            it.toProtoResult().toByteArray()
+        }
     }
 }

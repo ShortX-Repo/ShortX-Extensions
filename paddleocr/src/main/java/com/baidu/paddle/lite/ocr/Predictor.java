@@ -3,15 +3,12 @@ package com.baidu.paddle.lite.ocr;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -224,17 +221,8 @@ public class Predictor {
         wordLabels.add("black");
         // Load word labels from file
         try {
-            InputStream labelInputStream;
-            if (labelPath.startsWith(File.separator)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    labelInputStream = Files.newInputStream(Paths.get(labelPath));
-                } else {
-                    // noinspection IOStreamConstructor
-                    labelInputStream = new FileInputStream(labelPath);
-                }
-            } else {
-                labelInputStream = appCtx.getAssets().open(labelPath);
-            }
+            //noinspection IOStreamConstructor
+            InputStream labelInputStream = new FileInputStream(new File(appCtx.getCacheDir(), labelPath));
             int available = labelInputStream.available();
             byte[] lines = new byte[available];
             if (labelInputStream.read(lines) <= 0) {
@@ -247,7 +235,7 @@ public class Predictor {
             String[] contents = words.split("(\r)?\n");
             wordLabels.addAll(Arrays.asList(contents));
             wordLabels.add(" ");
-            Log.i(TAG, "Word label size: " + wordLabels.size());
+            Log.d(TAG, "Word label size: " + wordLabels.size());
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             return false;
@@ -280,7 +268,7 @@ public class Predictor {
         for (OcrResultModel resultModel : results) {
             Log.d(TAG, "recognize: " + resultModel.toString());
             if (resultModel.getConfidence() >= scoreThreshold) {
-                ocrResults.add(new OcrResult(resultModel));
+                ocrResults.add(resultModel.toOcrResult());
             }
         }
         Collections.sort(ocrResults);

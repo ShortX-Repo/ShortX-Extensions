@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import tornaco.apps.shortx.core.res.Remix
 import tornaco.apps.shortx.core.shortXManager
 import tornaco.apps.shortx.ext.api.cv.ShortXCVApi
-import tornaco.apps.shortx.ext.api.ocr.Paddle
+import tornaco.apps.shortx.ext.api.ocr.ShortXPaddleApi
 import tornaco.apps.shortx.ext.shortcut.ExportDAShortcut
 import tornaco.apps.shortx.ui.base.CategoryTitle
 import tornaco.apps.shortx.ui.base.ErrorCard
@@ -87,7 +87,7 @@ fun MainContent() {
 
         LaunchedEffect(Unit) {
             ShortXCVApi().initCV()
-            Paddle(context).detect(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+            ShortXPaddleApi(context).detect(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
         }
 
 

@@ -1,6 +1,7 @@
 package com.baidu.paddle.lite.ocr;
 
 import android.graphics.Point;
+import android.graphics.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,5 +94,25 @@ public class OcrResultModel {
                 ", clsLabel='" + clsLabel + '\'' +
                 ", clsConfidence=" + clsConfidence +
                 '}';
+    }
+
+    public OcrResult toOcrResult() {
+        int left = -1, right = -1, top = -1, bottom = -1;
+        for (Point point : getPoints()) {
+            if (point.x < left || left == -1) {
+                left = point.x;
+            }
+            if (point.x > right || right == -1) {
+                right = point.x;
+            }
+            if (point.y < top || top == -1) {
+                top = point.y;
+            }
+            if (point.y > bottom || bottom == -1) {
+                bottom = point.y;
+            }
+        }
+        return new OcrResult(getLabel(), getConfidence(),
+                new Rect(left, top, right, bottom));
     }
 }
