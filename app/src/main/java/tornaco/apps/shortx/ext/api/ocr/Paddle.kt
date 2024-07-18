@@ -1,7 +1,10 @@
 package tornaco.apps.shortx.ext.api.ocr
 
 import android.content.Context
+import android.graphics.Bitmap
 import autojs.api.OcrPaddle
+import autojs.image.ImageWrapper
+import com.baidu.paddle.lite.ocr.OcrResult
 import tornaco.apps.shortx.core.util.Logger
 import tornaco.apps.shortx.ext.api.ExtAppAssetsHelper
 
@@ -20,12 +23,23 @@ class Paddle(private val context: Context) {
         "models/ocr_v3_for_cpu(slim)/rec_opt.nb",
     )
 
-    fun init() {
-        assetsFiles.forEach {
-            ExtAppAssetsHelper.copyAssets(context, it, context.cacheDir.absolutePath)
+    private val ocr by lazy {
+        OcrPaddle(context).apply {
+            assetsFiles.forEach {
+                ExtAppAssetsHelper.copyAssets(context, it, context.cacheDir.absolutePath)
+            }
+            val init = init(false)
+            logger.d("Init: $init")
         }
+    }
 
-        val init = OcrPaddle(context).init(false)
-        logger.d("Init: $init")
+    fun detect(
+        image: Bitmap,
+        cpuThreadNum: Int = 4,
+        useSlim: Boolean = false
+    ): List<OcrResult> {
+        val result = ocr.detect(ImageWrapper.ofBitmap(image), cpuThreadNum, useSlim)
+        logger.d("Detect: $result")
+        return result
     }
 }

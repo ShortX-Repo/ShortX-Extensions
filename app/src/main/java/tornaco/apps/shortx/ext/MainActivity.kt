@@ -1,5 +1,6 @@
 package tornaco.apps.shortx.ext
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -86,7 +87,7 @@ fun MainContent() {
 
         LaunchedEffect(Unit) {
             ShortXCVApi().initCV()
-            Paddle(context).init()
+            Paddle(context).detect(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
         }
 
 
