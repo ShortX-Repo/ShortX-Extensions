@@ -4,4 +4,11 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     alias(libs.plugins.dagger.hilt.android) apply false
     alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.agp.lib) apply false
+}
+
+subprojects {
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+    }
 }

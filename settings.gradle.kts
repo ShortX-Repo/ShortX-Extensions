@@ -27,6 +27,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven(url = "https://jitpack.io")
         jcenter()
+        mavenLocal()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ShortX-Repo/ShortX-Core")
@@ -40,3 +41,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "ShortXExt"
 include(":app")
+include(":paddleocr")
+include(":org.opencv-4.8.0")
+

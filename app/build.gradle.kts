@@ -11,6 +11,7 @@ val extVersionName = "1.0"
 android {
     namespace = "tornaco.apps.shortx.ext"
     compileSdk = 34
+    ndkVersion = "21.1.6352462"
 
     defaultConfig {
         applicationId = "tornaco.apps.shortx.ext"
@@ -47,6 +48,16 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "arm64-v8a", "x86_64")
+            isUniversalApk = true
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -101,6 +112,9 @@ dependencies {
 
     implementation(libs.hiddenapibypass)
     implementation(libs.tinypinyin)
+
+    implementation(project(":paddleocr"))
+    implementation(project(":org.opencv-4.8.0"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

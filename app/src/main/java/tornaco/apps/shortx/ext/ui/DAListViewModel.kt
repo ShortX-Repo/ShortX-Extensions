@@ -18,7 +18,7 @@ data class DAListState(val daList: List<DirectActionUM>)
 
 @HiltViewModel
 class DAListViewModel @Inject constructor(@ApplicationContext context: Context) :
-    ContextViewModel<DAListState>(context, initState = { DAListState(emptyList()) }) {
+    ContextViewModel<DAListState, Unit>(context, initState = { DAListState(emptyList()) }) {
 
     fun init() {
         logger.d("Init ${shortXManager.version()}")

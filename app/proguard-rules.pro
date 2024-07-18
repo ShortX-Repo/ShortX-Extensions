@@ -8,6 +8,10 @@
  -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
 -keep class tornaco.apps.shortx.ext** {*;}
+-keep class autojs** {*;}
+
+# OCR
+-keep class com.baidu.paddle.fastdeploy.** { *; }
 
 # Proto
 -keep class tornaco.apps.shortx.core.proto** {*;}
