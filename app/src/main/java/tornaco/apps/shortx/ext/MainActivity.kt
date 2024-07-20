@@ -88,6 +88,7 @@ fun MainContent() {
         LaunchedEffect(Unit) {
             ShortXCVApi().initCV()
             ShortXPaddleApi(context).detect(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+            ShortXPaddleApi(context).recognizeText(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
         }
 
 
