@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
 }
 
-val extVersionCode = 1
-val extVersionName = "1.0"
+val extVersionCode = 2
+val extVersionName = "2.0"
 
 android {
     namespace = "tornaco.apps.shortx.ext"
