@@ -43,4 +43,14 @@ class ShortXPaddleApi(private val context: Context) {
             it.toProtoResult().toByteArray()
         }
     }
+
+    fun recognizeText(
+        image: Bitmap,
+        cpuThreadNum: Int = 4,
+        useSlim: Boolean = false
+    ): Array<String> {
+        val result = ocr.recognizeText(ImageWrapper.ofBitmap(image), cpuThreadNum, useSlim)
+        logger.d("recognizeText: $result")
+        return result
+    }
 }
