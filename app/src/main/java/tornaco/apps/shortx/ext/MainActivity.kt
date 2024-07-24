@@ -21,7 +21,6 @@ import tornaco.apps.shortx.core.res.Remix
 import tornaco.apps.shortx.core.shortXManager
 import tornaco.apps.shortx.ext.api.cv.ShortXCVApi
 import tornaco.apps.shortx.ext.api.ocr.ShortXPaddleApi
-import tornaco.apps.shortx.ext.shortcut.ExportDAShortcut
 import tornaco.apps.shortx.ui.base.CategoryTitle
 import tornaco.apps.shortx.ui.base.ErrorCard
 import tornaco.apps.shortx.ui.base.RemixIcon
@@ -88,14 +87,19 @@ fun MainContent() {
         LaunchedEffect(Unit) {
             ShortXCVApi().initCV()
             ShortXPaddleApi(context).detect(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
-            ShortXPaddleApi(context).recognizeText(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+            ShortXPaddleApi(context).recognizeText(
+                Bitmap.createBitmap(
+                    1,
+                    1,
+                    Bitmap.Config.ARGB_8888
+                )
+            )
         }
 
 
         CategoryTitle(
-            title = stringResource(id = R.string.ext_features)
+            title = stringResource(id = R.string.app_intro)
         )
-        ExportDAShortcut()
     }
 }
 

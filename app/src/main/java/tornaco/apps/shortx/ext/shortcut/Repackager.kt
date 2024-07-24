@@ -14,11 +14,11 @@ import com.wind.meditor.core.ManifestEditor
 import com.wind.meditor.property.AttributeItem
 import com.wind.meditor.property.ModificationProperty
 import com.wind.meditor.utils.NodeValue
+import tornaco.apps.shortx.core.res.remixResId
 import tornaco.apps.shortx.core.util.BitmapUtils
 import tornaco.apps.shortx.core.util.Logger
 import tornaco.apps.shortx.ext.R
 import tornaco.apps.shortx.ext.shortcut.ApkSignatureHelper.provideSigningExtension
-import tornaco.apps.shortx.ui.base.remixResId
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
