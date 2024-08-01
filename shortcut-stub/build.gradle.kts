@@ -1,13 +1,7 @@
-import tornaco.project.android.shortx.Configs
-import tornaco.project.android.shortx.Configs.keyStoreAlias
-import tornaco.project.android.shortx.Configs.keyStorePassword
-import tornaco.project.android.shortx.log
-
 plugins {
-    alias(libs.plugins.giagp.app)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -15,11 +9,11 @@ android {
 
     signingConfigs {
         create("release") {
-            Configs.KeyStorePath.also {
+            "public.jks".also {
                 storeFile = rootProject.file(it)
-                storePassword = keyStorePassword()
-                keyAlias = keyStoreAlias()
-                keyPassword = keyStorePassword()
+                storePassword = "123456"
+                keyAlias = "shortx"
+                keyPassword = "123456"
             }
         }
     }
@@ -61,10 +55,6 @@ android {
         dataBinding = false
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
     packaging {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
@@ -73,20 +63,19 @@ android {
         outputs.all {
             val impl =
                 this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
-            log("impl.outputFileName changed to:${impl.outputFileName}")
         }
     }
 
     defaultConfig {
         setProperty(
             "archivesBaseName",
-            "shortcut-stub-${Configs.sxVersionName}(${Configs.sxVersionCode})"
+            "shortcut-stub"
         )
     }
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(libs.core)
     implementation(libs.hiddenapibypass)
 }
 
