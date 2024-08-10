@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import autojs.opencv.OpenCVHelper;
-import tornaco.apps.shortx.ui.cv.api.ScreenMetrics;
+import autojs.api.ScreenMetrics;
 
 /**
  * Created by Stardust on May 18, 2017.

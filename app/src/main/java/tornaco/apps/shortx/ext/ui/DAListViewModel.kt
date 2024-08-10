@@ -25,7 +25,7 @@ class DAListViewModel @Inject constructor(@ApplicationContext context: Context) 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val daList = shortXManager.getAllDirectAction().map {
-                    daToDirectActionUM(it, emptyList(), emptyList())
+                    daToDirectActionUM(it, emptyList())
                 }
                 logger.d("daList: $daList")
                 updateState { copy(daList = daList) }

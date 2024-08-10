@@ -43,5 +43,5 @@ rootProject.name = "ShortXExt"
 include(":app")
 include(":paddleocr")
 include(":org.opencv-4.8.0")
-include(":shortcut-stub")
+// include(":shortcut-stub")
 

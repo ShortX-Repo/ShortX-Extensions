@@ -1,4 +1,4 @@
-package tornaco.apps.shortx.ui.cv.api
+package autojs.api
 
 import android.app.Activity
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
