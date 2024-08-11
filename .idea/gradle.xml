@@ -12,7 +12,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/org.opencv-4.8.0" />
             <option value="$PROJECT_DIR$/paddleocr" />
-            <option value="$PROJECT_DIR$/shortcut-stub" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

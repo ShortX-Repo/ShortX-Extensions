@@ -25,6 +25,7 @@ import tornaco.apps.shortx.ext.api.ocr.ShortXPaddleApi
 import tornaco.apps.shortx.ui.base.CategoryTitle
 import tornaco.apps.shortx.ui.base.ErrorCard
 import tornaco.apps.shortx.ui.base.RemixIcon
+import tornaco.apps.shortx.ui.base.SectionSpacer
 import tornaco.apps.shortx.ui.base.ShortXAppBarScaffold
 import tornaco.apps.shortx.ui.base.TipCard
 import tornaco.apps.shortx.ui.base.TipDialog
@@ -58,7 +59,7 @@ fun MainContent() {
     TipDialog(state = appIntroDialog)
 
     ShortXAppBarScaffold(
-        title = stringResource(id = R.string.app_name),
+        title = stringResource(id = R.string.app_name) + BuildConfig.VERSION_NAME,
         onBackPressed = null,
         actions = {
             IconButton(onClick = { appIntroDialog.show() }) {
@@ -102,6 +103,8 @@ fun MainContent() {
         CategoryTitle(
             title = stringResource(id = R.string.app_intro)
         )
+
+        SectionSpacer()
     }
 }
 

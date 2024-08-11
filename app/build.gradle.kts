@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
 }
 
-val extVersionCode = 2
-val extVersionName = "2.0"
+val extVersionCode = 3
+val extVersionName = "3.0"
 
 android {
     namespace = "tornaco.apps.shortx.ext"
@@ -67,6 +67,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
