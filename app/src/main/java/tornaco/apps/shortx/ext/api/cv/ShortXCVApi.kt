@@ -3,6 +3,7 @@ package tornaco.apps.shortx.ext.api.cv
 import android.graphics.Bitmap
 import android.graphics.Point
 import autojs.api.Images
+import autojs.api.ScreenMetrics
 import autojs.image.ColorFinder
 import autojs.image.ImageWrapper
 import autojs.opencv.OpenCVHelper
@@ -12,7 +13,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import org.opencv.core.Rect
 import tornaco.apps.shortx.core.annotations.DoNotStrip
 import tornaco.apps.shortx.core.util.Logger
-import autojs.api.ScreenMetrics
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @DoNotStrip
@@ -50,7 +50,7 @@ class ShortXCVApi {
         image: Bitmap,
         color: Int,
         threshold: Int,
-        rect: Rect?
+        rect: android.graphics.Rect?
     ): List<Point> {
         runBlocking {
             initCV()
@@ -60,10 +60,22 @@ class ShortXCVApi {
             ImageWrapper.ofBitmap(image),
             color,
             threshold,
-            rect
+            rect?.let {
+                convertFromAndroidRect(it)
+            }
         )
         return points.map {
             Point(it.x.toInt(), it.y.toInt())
         }
     }
+
+    private fun convertFromAndroidRect(androidRect: android.graphics.Rect): Rect {
+        val x = androidRect.left
+        val y = androidRect.top
+        val width = androidRect.width()
+        val height = androidRect.height()
+
+        return Rect(x, y, width, height)
+    }
 }
+
