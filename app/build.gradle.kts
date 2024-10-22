@@ -10,13 +10,13 @@ val extVersionName = "3.0"
 
 android {
     namespace = "tornaco.apps.shortx.ext"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = "21.1.6352462"
 
     defaultConfig {
         applicationId = "tornaco.apps.shortx.ext"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = extVersionCode
         versionName = extVersionName
 

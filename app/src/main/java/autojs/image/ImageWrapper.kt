@@ -3,11 +3,11 @@ package autojs.image
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.media.Image
+import autojs.opencv.OpenCVHelper
 import org.opencv.android.Utils
 import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgcodecs.Imgcodecs
-import autojs.opencv.OpenCVHelper
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.UncheckedIOException
@@ -148,9 +148,19 @@ class ImageWrapper(bitmap: Bitmap?, mat: Mat?) : Recyclable {
         return if (mBitmap == null) {
             ofMat(mMat!!.clone())!!
         } else if (mMat == null) {
-            ofBitmap(mBitmap!!.copy(mBitmap!!.config, true))!!
+            ofBitmap(
+                mBitmap!!.copy(
+                    requireNotNull(mBitmap?.config) { "ofBitmap - mBitmap?.config is null" },
+                    true
+                )
+            )!!
         } else {
-            ImageWrapper(mBitmap!!.copy(mBitmap!!.config, true), mMat!!.clone())
+            ImageWrapper(
+                mBitmap!!.copy(
+                    requireNotNull(mBitmap?.config) { "ImageWrapper - mBitmap?.config is null" },
+                    true
+                ), mMat!!.clone()
+            )
         }
     }
 
