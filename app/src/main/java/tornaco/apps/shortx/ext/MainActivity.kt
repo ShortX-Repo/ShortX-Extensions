@@ -152,7 +152,7 @@ private fun testPaddle(context: Context) {
                 context.resources,
                 R.raw.screen1
             )
-        )
+        ).apply { Logger.nameless.w(this) }
     }
 }
 
