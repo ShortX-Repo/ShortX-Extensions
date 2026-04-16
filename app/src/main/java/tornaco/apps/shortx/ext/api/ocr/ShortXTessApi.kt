@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.Log
 import com.googlecode.tesseract.android.TessBaseAPI
+import tornaco.apps.shortx.core.annotations.DoNotStrip
 import tornaco.apps.shortx.core.proto.toProtoRect
 import tornaco.apps.shortx.ext.api.ExtAppAssetsHelper
 import tornaco.apps.shortx.ext.api.ocr.TessApi.findAllContinuousTextPositions
@@ -18,6 +19,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 
+@DoNotStrip
 class ShortXTessApi(private val context: Context) {
     private val tess by lazy {
         TessApi.install(context)
@@ -30,6 +32,12 @@ class ShortXTessApi(private val context: Context) {
 
     fun recognizeTextWithRect(bitmap: Bitmap): List<TextBlock> {
         return tess.recognizeTextWithRect(bitmap)
+    }
+
+    fun recognizeTextJson(bitmap: Bitmap): String {
+        val text = tess.recognizeText(bitmap).orEmpty()
+        val blocks = tess.recognizeTextWithRect(bitmap)
+        return blocks.toOcrJson(engine = "tesseract", text = text)
     }
 
     fun findContinuousTextPosition(
@@ -104,8 +112,8 @@ object TessApi {
         val wordIterator = resultIterator
         wordIterator.begin()
         do {
-            val wordText = wordIterator.getUTF8Text(TessBaseAPI.PageIteratorLevel.RIL_WORD)
-            val rect = wordIterator.getBoundingRect(TessBaseAPI.PageIteratorLevel.RIL_WORD)
+            val wordText = wordIterator.getUTF8Text(TessBaseAPI.PageIteratorLevel.RIL_WORD).orEmpty()
+            val rect = wordIterator.getBoundingRect(TessBaseAPI.PageIteratorLevel.RIL_WORD) ?: Rect()
             wordBoundingBoxes.add(TextBlock(wordText, rect))
         } while (wordIterator.next(TessBaseAPI.PageIteratorLevel.RIL_WORD))
         return wordBoundingBoxes

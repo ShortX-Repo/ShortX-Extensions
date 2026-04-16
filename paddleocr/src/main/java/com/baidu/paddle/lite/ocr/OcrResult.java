@@ -1,5 +1,6 @@
 package com.baidu.paddle.lite.ocr;
 
+import android.graphics.Point;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ public class OcrResult implements Comparable<OcrResult> {
     private String label;
     private float confidence;
     private Rect bounds;
+    private float clsIdx;
+    private String clsLabel;
+    private float clsConfidence;
+    private final List<Point> points = new ArrayList<>();
     private final List<OcrResult> elements = new ArrayList<>();
 
     public OcrResult() {
@@ -50,6 +55,50 @@ public class OcrResult implements Comparable<OcrResult> {
         this.bounds = bounds;
     }
 
+    public float getClsIdx() {
+        return clsIdx;
+    }
+
+    public void setClsIdx(float clsIdx) {
+        this.clsIdx = clsIdx;
+    }
+
+    public String getClsLabel() {
+        return clsLabel;
+    }
+
+    public void setClsLabel(String clsLabel) {
+        this.clsLabel = clsLabel;
+    }
+
+    public float getClsConfidence() {
+        return clsConfidence;
+    }
+
+    public void setClsConfidence(float clsConfidence) {
+        this.clsConfidence = clsConfidence;
+    }
+
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    public void addPoint(Point point) {
+        if (point != null) {
+            this.points.add(point);
+        }
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points.clear();
+        if (points == null) {
+            return;
+        }
+        for (Point point : points) {
+            addPoint(point == null ? null : new Point(point.x, point.y));
+        }
+    }
+
     public RectLocation getLocation() {
         return new RectLocation(bounds);
     }
@@ -83,6 +132,10 @@ public class OcrResult implements Comparable<OcrResult> {
         return "OcrResult{" + "label='" + label + '\'' +
                 ", confidence=" + confidence +
                 ", bounds=" + bounds +
+                ", clsIdx=" + clsIdx +
+                ", clsLabel='" + clsLabel + '\'' +
+                ", clsConfidence=" + clsConfidence +
+                ", points=" + points +
                 ", elements=" + elements +
                 '}';
     }

@@ -120,6 +120,7 @@ dependencies {
     implementation(project(":org.opencv-4.8.0"))
 
     implementation(libs.tesseract4android.openmp)
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

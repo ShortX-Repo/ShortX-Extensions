@@ -112,7 +112,12 @@ public class OcrResultModel {
                 bottom = point.y;
             }
         }
-        return new OcrResult(getLabel(), getConfidence(),
+        OcrResult ocrResult = new OcrResult(getLabel(), getConfidence(),
                 new Rect(left, top, right, bottom));
+        ocrResult.setPoints(getPoints());
+        ocrResult.setClsIdx(getClsIdx());
+        ocrResult.setClsLabel(getClsLabel());
+        ocrResult.setClsConfidence(getClsConfidence());
+        return ocrResult;
     }
 }

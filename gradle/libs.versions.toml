@@ -14,6 +14,7 @@ tesseract4androidOpenmp = "4.8.0"
 tinypinyin = "3.0.0"
 apksig = "8.2.2"
 shortx = "1.0.0"
+gson = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,7 @@ tinypinyin = { module = "com.github.promeg:tinypinyin", version.ref = "tinypinyi
 apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
 ui-base = { module = "tornaco.apps.shortx:ui-base", version.ref = "shortx" }
 core = { module = "tornaco.apps.shortx:core-api", version.ref = "shortx" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 [plugins]
 agp-lib = { id = "com.android.library", version.ref = "agp" }
