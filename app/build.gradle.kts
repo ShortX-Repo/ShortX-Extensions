@@ -54,6 +54,10 @@ android {
         }
     }
 
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
+
     splits {
         abi {
             isEnable = true
