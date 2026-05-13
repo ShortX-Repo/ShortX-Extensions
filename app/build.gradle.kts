@@ -29,6 +29,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        manifestPlaceholders["AMAP_API_KEY"] = "31848aab43b89096cd88893c5efd3e69"
     }
 
     signingConfigs {
@@ -45,6 +47,15 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            isMinifyEnabled = false
             isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -77,6 +88,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        aidl = true
     }
     packaging {
         resources {
@@ -125,6 +137,8 @@ dependencies {
 
     implementation(libs.tesseract4android.openmp)
     implementation(libs.gson)
+
+    implementation("com.amap.api:location:6.5.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
