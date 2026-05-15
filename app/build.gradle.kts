@@ -11,7 +11,7 @@ val startOf2000 = 946684800000L
 val versionCodeByTime =
     ((System.currentTimeMillis() - startOf2000) / 1000 / 60 / 10).toInt()
 val extVersionCode = versionCodeByTime
-val extVersionName = "6.0"
+val extVersionName = "8.0"
 
 android {
     namespace = "tornaco.apps.shortx.ext"
