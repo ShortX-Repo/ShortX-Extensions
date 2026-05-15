@@ -60,10 +60,15 @@ internal object AppLocationServiceSupport {
                     .setProvider(locationProvider(location))
                     .setAccuracy(location.accuracy)
                     .build()
+                logger.d(
+                    "getCurrentLocationInfo success, requestId=$requestId, lat=${result.latitude}, lng=${result.longitude}, accuracy=${result.accuracy}, provider=${result.provider}"
+                )
                 receiver.send(result.toByteArray().wrap())
+                logger.d("getCurrentLocationInfo response sent, requestId=$requestId")
             }.onFailure {
                 logger.e(it, "getCurrentLocationInfo failed")
                 receiver.propagateException(RuntimeException(it))
+                logger.d("getCurrentLocationInfo exception propagated, requestId=$requestId")
             }
         }
     }
@@ -102,10 +107,15 @@ internal object AppLocationServiceSupport {
                     .setPostalCode("")
                     .setFeatureName(location.aoiName.orEmpty())
                     .build()
+                logger.d(
+                    "getCurrentLocationAddress success, requestId=$requestId, addressLine=${result.addressLine}, country=${result.countryName}, adminArea=${result.adminArea}, locality=${result.locality}, subLocality=${result.subLocality}"
+                )
                 receiver.send(result.toByteArray().wrap())
+                logger.d("getCurrentLocationAddress response sent, requestId=$requestId")
             }.onFailure {
                 logger.e(it, "getCurrentLocationAddress failed")
                 receiver.propagateException(RuntimeException(it))
+                logger.d("getCurrentLocationAddress exception propagated, requestId=$requestId")
             }
         }
     }

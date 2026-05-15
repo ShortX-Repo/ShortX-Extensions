@@ -164,6 +164,11 @@ fun MainContent() {
         }
 
         Column(Modifier.padding(16.dp)) {
+            TipCard(
+                modifier = Modifier.padding(bottom = 8.dp),
+                tip = "申请位置权限时，请在系统弹窗中选择“使用时允许”，否则高德定位服务无法获取当前位置。",
+            )
+
             Button(onClick = {
                 locationPermissionLauncher.launch(
                     arrayOf(
@@ -177,12 +182,22 @@ fun MainContent() {
 
             Button(onClick = {
                 scope.launch {
-                    testLocation(context) {
+                    testCurrentLocationInfo(context) {
                         locationInfo = it
                     }
                 }
             }) {
-                Text("testLocation")
+                Text("testCurrentLocationInfo")
+            }
+
+            Button(onClick = {
+                scope.launch {
+                    testCurrentLocationAddress(context) {
+                        locationInfo = it
+                    }
+                }
+            }) {
+                Text("testCurrentLocationAddress")
             }
 
             Button(onClick = {
@@ -208,15 +223,91 @@ fun MainContent() {
     }
 }
 
-private suspend fun testLocation(context: Context, onResult: (String) -> Unit) {
-    Logger.nameless.d("testLocation...")
-    onResult("Locating...")
-    val provider = suspendCancellableCoroutine<ILocationProvider?> { continuation ->
+private suspend fun testCurrentLocationInfo(context: Context, onResult: (String) -> Unit) {
+    Logger.nameless.d("testCurrentLocationInfo...")
+    onResult("Getting current coordinates...")
+    runCatching {
+        withLocationProvider(context) { service ->
+            withContext(Dispatchers.IO) {
+                val receiver = SynchronousResultReceiver.get()
+                val request = GetCurrentLocationInfo.newBuilder()
+                    .setProviderPreference(CurrentLocationProviderPreference.CurrentLocationProviderPreference_Auto)
+                    .setTimeoutMillis(TEST_LOCATION_TIMEOUT_MILLIS)
+                    .build()
+                service.getCurrentLocationInfo("test-info", receiver, request.toByteArray().wrap())
+                val result = receiver.awaitResultNoInterrupt(TEST_LOCATION_RECEIVER_TIMEOUT)
+                result.getValue(null)?.let {
+                    CurrentLocationInfoData.parseFrom(it.byteData)
+                } ?: error("Location info is empty")
+            }
+        }
+    }.onSuccess { info ->
+        Logger.nameless.d("Location info: $info")
+        onResult(
+            "Current coordinates:\n" +
+                    "latitude=${info.latitude}\n" +
+                    "longitude=${info.longitude}\n" +
+                    "accuracy=${info.accuracy}\n" +
+                    "provider=${info.provider}"
+        )
+    }.onFailure {
+        Logger.nameless.e(it, "testCurrentLocationInfo failed")
+        onResult("testCurrentLocationInfo failed: ${it.message}")
+    }
+}
+
+private suspend fun testCurrentLocationAddress(context: Context, onResult: (String) -> Unit) {
+    Logger.nameless.d("testCurrentLocationAddress...")
+    onResult("Getting current address...")
+    runCatching {
+        withLocationProvider(context) { service ->
+            withContext(Dispatchers.IO) {
+                val receiver = SynchronousResultReceiver.get()
+                val request = GetCurrentLocationAddress.newBuilder()
+                    .setProviderPreference(CurrentLocationProviderPreference.CurrentLocationProviderPreference_Auto)
+                    .setTimeoutMillis(TEST_LOCATION_TIMEOUT_MILLIS)
+                    .build()
+                service.getCurrentLocationAddress("test-address", receiver, request.toByteArray().wrap())
+                val result = receiver.awaitResultNoInterrupt(TEST_LOCATION_RECEIVER_TIMEOUT)
+                result.getValue(null)?.let {
+                    CurrentLocationAddressData.parseFrom(it.byteData)
+                } ?: error("Location address is empty")
+            }
+        }
+    }.onSuccess { address ->
+        Logger.nameless.d("Location address: $address")
+        onResult(
+            "Current address:\n" +
+                    "addressLine=${address.addressLine}\n" +
+                    "country=${address.countryName}\n" +
+                    "adminArea=${address.adminArea}\n" +
+                    "locality=${address.locality}\n" +
+                    "subLocality=${address.subLocality}\n" +
+                    "thoroughfare=${address.thoroughfare}\n" +
+                    "featureName=${address.featureName}"
+        )
+    }.onFailure {
+        Logger.nameless.e(it, "testCurrentLocationAddress failed")
+        onResult("testCurrentLocationAddress failed: ${it.message}")
+    }
+}
+
+private suspend fun <T> withLocationProvider(
+    context: Context,
+    block: suspend (ILocationProvider) -> T,
+): T {
+    val bound = suspendCancellableCoroutine<BoundLocationProvider> { continuation ->
+        var serviceBound = false
         val connection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 Logger.nameless.d("onServiceConnected: $name")
                 if (continuation.isActive) {
-                    continuation.resume(ILocationProvider.Stub.asInterface(service))
+                    continuation.resume(
+                        BoundLocationProvider(
+                            provider = ILocationProvider.Stub.asInterface(service),
+                            connection = this,
+                        )
+                    )
                 }
             }
 
@@ -225,49 +316,30 @@ private suspend fun testLocation(context: Context, onResult: (String) -> Unit) {
             }
         }
         val intent = Intent(context, AppLocationService::class.java)
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        serviceBound = context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        if (!serviceBound && continuation.isActive) {
+            continuation.cancel(IllegalStateException("Failed to bind AppLocationService"))
+        }
         continuation.invokeOnCancellation {
-            context.unbindService(connection)
+            if (serviceBound) {
+                context.unbindService(connection)
+            }
         }
     }
-
-    provider?.let { service ->
-        runCatching {
-            val receiver = SynchronousResultReceiver.get()
-            val request = GetCurrentLocationInfo.newBuilder()
-                .setProviderPreference(CurrentLocationProviderPreference.CurrentLocationProviderPreference_Auto)
-                .setTimeoutMillis(10000)
-                .build()
-            service.getCurrentLocationInfo("test-info", receiver, request.toByteArray().wrap())
-            val result = receiver.awaitResultNoInterrupt(Duration.ofSeconds(10))
-            val info = result.getValue(null)?.let {
-                CurrentLocationInfoData.parseFrom(it.byteData)
-            }
-            Logger.nameless.d("Location info: $info")
-
-            val addressReceiver = SynchronousResultReceiver.get()
-            val addressRequest = GetCurrentLocationAddress.newBuilder()
-                .setProviderPreference(CurrentLocationProviderPreference.CurrentLocationProviderPreference_Auto)
-                .setTimeoutMillis(10000)
-                .build()
-            service.getCurrentLocationAddress(
-                "test-address",
-                addressReceiver,
-                addressRequest.toByteArray().wrap()
-            )
-            val addressResult = addressReceiver.awaitResultNoInterrupt(Duration.ofSeconds(10))
-            val address = addressResult.getValue(null)?.let {
-                CurrentLocationAddressData.parseFrom(it.byteData)
-            }
-            Logger.nameless.d("Location address: $address")
-
-            onResult("Location: ${info?.latitude}, ${info?.longitude}\nAddress: ${address?.addressLine}")
-        }.onFailure {
-            Logger.nameless.e(it, "testLocation failed")
-            onResult("testLocation failed: ${it.message}")
-        }
+    return try {
+        block(bound.provider)
+    } finally {
+        context.unbindService(bound.connection)
     }
 }
+
+private data class BoundLocationProvider(
+    val provider: ILocationProvider,
+    val connection: ServiceConnection,
+)
+
+private const val TEST_LOCATION_TIMEOUT_MILLIS = 15000L
+private val TEST_LOCATION_RECEIVER_TIMEOUT: Duration = Duration.ofSeconds(25)
 
 private fun testPaddle(context: Context) {
     ShortXPaddleApi(context).apply {
